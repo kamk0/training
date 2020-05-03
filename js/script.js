@@ -29,12 +29,28 @@ $.ajax({
       "Authorization":  'Bearer ' + (localStorage.getItem('token')),
   },
   success: function (data) {
+      console.log(data["hydra:member"]);
+      
       addPagination(data["hydra:member"])
       showPagePagination(data["hydra:member"], 1);
       filterProduct(data["hydra:member"]);
   },
   error: function (xhr, status) {
     
+  }
+});
+//Get Categories
+$.ajax({
+  type: 'GET',
+  url: 'http://symfony-erp.intexsoft.by/api/catalog_trees',
+  crossDomain: true,
+  headers: { 
+      "Authorization":  'Bearer ' + (localStorage.getItem('token')),
+  },
+  success: function (data) {
+      addCategories(data["hydra:member"])
+  },
+  error: function (xhr, status) {
   }
 });
 
@@ -100,6 +116,79 @@ function filterProduct(data) {
 }
 
 
+
+function ajaxCategories(data) {
+  $('.nav-link a').click(function(e) {
+    e.preventDefault()
+    let category_url = `http://symfony-erp.intexsoft.by${$(this).attr('href')}`
+    let array = []
+     $.ajax({
+         url: category_url,
+         type: 'GET',
+         headers: { 
+          "Authorization":  'Bearer ' + (localStorage.getItem('token')),
+        },
+         success:  function (data) {
+              clearDocument($('.content'))
+              $.each(data["products"], function(key,data){
+                array.push(data)
+              })
+              // $.each(data,function(key,data) {
+              // console.log(['products']);
+
+              // $('.content').append($(`
+              // <div class="nav-link">
+              //   <a href="${ key["@id"] }">${key["title"]}</a>
+              // </div>
+              // `))
+            // })
+          //    $.ajax({
+          //     url: category_url,
+          //     type: 'GET',
+          //     headers: { 
+          //      "Authorization":  'Bearer ' + (localStorage.getItem('token')),
+          //    },
+          //     success:  function (data) {
+          //         clearDocument($('.content'))
+          //         $('.content').append( $(data).find('.content').html() )
+          //      },
+          //     error: function (xhr, status) {
+               
+          //    }
+          // })
+          },
+         error: function (xhr, status) {
+          
+        }
+     })
+    //product
+    $.ajax({
+      type: 'GET',
+      url: 'http://symfony-erp.intexsoft.by/api/products',
+      crossDomain: true,
+      headers: { 
+          "Authorization":  'Bearer ' + (localStorage.getItem('token')),
+      },
+      success: function (data) {
+       let newArr = [];
+
+     $.each(data["hydra:member"], function(key,data){
+       newArr.push(data["@id"])
+      console.log(newArr);
+      console.log(array);
+
+    })
+          // addPagination(data["hydra:member"])
+          // showPagePagination(data["hydra:member"], 1);
+          // filterProduct(data["hydra:member"]);
+      },
+      error: function (xhr, status) {
+        
+      }
+    });
+
+ })
+}
 
 // Cортировка в числовом порядке можно улучшить функцию reverse
 function sortInNumericalOrder(array, key){
