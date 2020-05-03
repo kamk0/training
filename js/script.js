@@ -31,6 +31,7 @@ $.ajax({
   success: function (data) {
       addPagination(data["hydra:member"])
       showPagePagination(data["hydra:member"], 1);
+      filterProduct(data["hydra:member"]);
   },
   error: function (xhr, status) {
     
@@ -52,6 +53,17 @@ function addProduct(data) {
       </div>
     `))
   })
+}
+
+function addCategories(data) {
+  $.each(data,function(key,data) {
+      $('.siteBar').append($(`
+      <div class="nav-link">
+        <a href="${ data["@id"] }">${data["title"]}</a>
+      </div>
+    `))
+  })
+  ajaxCategories(data)
 }
 
 function addPagination(data) {
@@ -76,6 +88,18 @@ function showPagePagination(array, numberPage) {
         clearDocument($('.content'))
         addProduct(notes)
 }
+
+function filterProduct(data) {
+  $('.btn').click(function(e) {
+    e.preventDefault()
+    sortInNumericalOrder(data, `${$(this).attr('href')}`)
+    clearDocument($('.content'))
+    showPagePagination(data, 1);
+  })
+  
+}
+
+
 
 // Cортировка в числовом порядке можно улучшить функцию reverse
 function sortInNumericalOrder(array, key){
