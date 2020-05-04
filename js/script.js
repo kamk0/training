@@ -1,4 +1,4 @@
-const PRODUCT_PER_PAGE = 5;
+const PRODUCT_PER_PAGE = 8;
 
 //Login
 $.ajax({
@@ -62,10 +62,11 @@ function addProduct(data) {
   $.each(data,function(key,data) {
     $('.content').append($(`
       <div class="wrapper">
-        <h2>${data["title"]}</h2>
-        <p>${data["description"]}</p>
-        <p>Цена: ${data["price"]}</p>
-        <p>Осталось: ${data["count"]}</p>
+        <img src="../img/7-7-450x450.jpg" alt="img">
+        <a href="#" class="title">${data["title"]}</a>
+        <p class="description">${data["description"]}</p>
+        <p class="price">$${data["price"]}</p>
+        <p class="count">Осталось: ${data["count"]}</p>
       </div>
     `))
   })
@@ -74,9 +75,9 @@ function addProduct(data) {
 function addCategories(data) {
   $.each(data,function(key,data) {
       $('.siteBar').append($(`
-      <div class="nav-link">
-        <a href="${ data["@id"] }">${data["title"]}</a>
-      </div>
+      <a href="${ data["@id"] }" class="nav-link">
+        <span>${data["title"]}</span>
+      </a>
     `))
   })
   ajaxCategories(data)
