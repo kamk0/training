@@ -29,8 +29,6 @@ $.ajax({
       "Authorization":  'Bearer ' + (localStorage.getItem('token')),
   },
   success: function (data) {
-      console.log(data["hydra:member"]);
-      
       addPagination(data["hydra:member"])
       showPagePagination(data["hydra:member"], 1);
       filterProduct(data["hydra:member"]);
@@ -86,7 +84,6 @@ function addCategories(data) {
 function addPagination(data) {
   let array = data;
   let arrayLength = Math.ceil(array.length / PRODUCT_PER_PAGE)
-  // PRODUCT_PER_PAGE
   for (let index = 1; index <= arrayLength; index++) {
     $('.pagination').append($(`
       <span class="pagination-block" >${index}</span>
@@ -115,14 +112,12 @@ function filterProduct(data) {
   })
   
 }
-
-
-
+//Go to categories
 function ajaxCategories(data) {
-  $('.nav-link a').click(function(e) {
+  $('.nav-link').click(function(e) {
     e.preventDefault()
     let category_url = `http://symfony-erp.intexsoft.by${$(this).attr('href')}`
-    let array = []
+    let array = [];
      $.ajax({
          url: category_url,
          type: 'GET',
@@ -134,35 +129,13 @@ function ajaxCategories(data) {
               $.each(data["products"], function(key,data){
                 array.push(data)
               })
-              // $.each(data,function(key,data) {
-              // console.log(['products']);
-
-              // $('.content').append($(`
-              // <div class="nav-link">
-              //   <a href="${ key["@id"] }">${key["title"]}</a>
-              // </div>
-              // `))
-            // })
-          //    $.ajax({
-          //     url: category_url,
-          //     type: 'GET',
-          //     headers: { 
-          //      "Authorization":  'Bearer ' + (localStorage.getItem('token')),
-          //    },
-          //     success:  function (data) {
-          //         clearDocument($('.content'))
-          //         $('.content').append( $(data).find('.content').html() )
-          //      },
-          //     error: function (xhr, status) {
-               
-          //    }
-          // })
+              return array;
           },
          error: function (xhr, status) {
           
         }
      })
-    //product
+    //Add a product from a category on a page
     $.ajax({
       type: 'GET',
       url: 'http://symfony-erp.intexsoft.by/api/products',
@@ -171,27 +144,32 @@ function ajaxCategories(data) {
           "Authorization":  'Bearer ' + (localStorage.getItem('token')),
       },
       success: function (data) {
-       let newArr = [];
+        let newArr = [];
+        $.each(array, function(key,value){
+          for (let index = 0; index < data["hydra:member"].length; index++) {
+            if (value == data["hydra:member"][index]["@id"]) {
+              newArr.push(data["hydra:member"][index])
+            }  
+          }
+        })
 
-     $.each(data["hydra:member"], function(key,data){
-       newArr.push(data["@id"])
+        if (newArr.length > 0) {
       console.log(newArr);
-      console.log(array);
-
-    })
-          // addPagination(data["hydra:member"])
-          // showPagePagination(data["hydra:member"], 1);
-          // filterProduct(data["hydra:member"]);
+          
+          showPagePagination(newArr, 1);
+        } else {
+          clearDocument($('.content'))
+          $('.content').append($(`<span>There are no products in this category.</span>`))
+        }
       },
       error: function (xhr, status) {
         
       }
     });
-
  })
 }
 
-// Cортировка в числовом порядке можно улучшить функцию reverse
+// Sorting in numerical order can improve the reverse function
 function sortInNumericalOrder(array, key){
   array.sort(function(a,b){
      if (a[key] < b[key]){
