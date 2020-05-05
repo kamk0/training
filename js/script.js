@@ -1,4 +1,4 @@
-const PRODUCT_PER_PAGE = 8;
+const PRODUCT_PER_PAGE = 12;
 
 //Login
 $.ajax({
@@ -61,14 +61,42 @@ function addProduct(data) {
     $('.content').append($(`
       <div class="wrapper">
         <img src="../img/7-7-450x450.jpg" alt="img">
-        <a href="#" class="title">${data["title"]}</a>
+        <a href="${data['@id']}" class="title">${data["title"]}</a>
         <p class="description">${data["description"]}</p>
         <p class="price">$${data["price"]}</p>
         <p class="count">Осталось: ${data["count"]}</p>
       </div>
     `))
   })
+  applicationInformation(data)
 }
+
+
+function applicationInformation(data) {
+  
+  $('.title').click(function(e) {
+    e.preventDefault()
+    
+    let category_url = `http://symfony-erp.intexsoft.by${$(this).attr('href')}`
+    $.ajax({
+      url: category_url,
+      type: 'GET',
+      crossDomain: true,
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      headers: { 
+       "Authorization":  'Bearer ' + (localStorage.getItem('token')),
+     },
+      success:  function (data) {
+           clearDocument($('.content'))
+       },
+      error: function (xhr, status) {
+       
+     }
+  })
+  })
+}
+
 
 function addCategories(data) {
   $.each(data,function(key,data) {
@@ -110,7 +138,6 @@ function filterProduct(data) {
     clearDocument($('.content'))
     showPagePagination(data, 1);
   })
-  
 }
 //Go to categories
 function ajaxCategories(data) {
@@ -154,7 +181,7 @@ function ajaxCategories(data) {
         })
 
         if (newArr.length > 0) {
-      console.log(newArr);
+          console.log(newArr);
           
           showPagePagination(newArr, 1);
         } else {
