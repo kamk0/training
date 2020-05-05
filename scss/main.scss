@@ -7,7 +7,7 @@ body {
   font-size: 14px;
 }
 a, div, p, span, h1, h2, h3, h4 {
-  transition: all .3s ease 0s;
+  transition: all .3s;
 }
 .container  {
   color: #333;
@@ -70,7 +70,9 @@ a, div, p, span, h1, h2, h3, h4 {
   .content {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     width: 100%;
+    min-height: 716px;
     .wrapper {
       position: relative;
       font-size: 14px;

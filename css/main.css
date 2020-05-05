@@ -6,8 +6,8 @@ body {
 }
 
 a, div, p, span, h1, h2, h3, h4 {
-  -webkit-transition: all .3s ease 0s;
-  transition: all .3s ease 0s;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .container {
@@ -107,7 +107,11 @@ a, div, p, span, h1, h2, h3, h4 {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
   width: 100%;
+  min-height: 716px;
 }
 
 .container .content .wrapper {
