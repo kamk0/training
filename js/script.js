@@ -31,6 +31,7 @@ $.ajax({
     addPagination(data["hydra:member"])
     showPagePagination(data["hydra:member"], 1);
     filterProduct(data["hydra:member"]);
+    productInfo(data["hydra:member"])
   },
   error: function (xhr, status) {
 
@@ -54,18 +55,40 @@ function clearDocument(element) {
   element.empty()
 }
 
-function addProduct(data) {
-  $.each(data, function (key, data) {
+//addProduct 
+function outputProductTemplate(data, boolean, customClass, title, description, price, count) {
+  if (boolean) {
+    $.each(data, function (key, data) {
+      $('.content').append($(`
+        <div class="${customClass}">
+          <img src="../img/7-7-450x450.jpg" alt="img">
+          <div class="block">
+            <a href="${data[title]}" class="title">${data[title]}</a>
+            <p class="description">${data[description]}</p>
+            <p class="price">$${data[price]}</p>
+            <p class="count">Осталось: ${data[count]}</p>
+          </div>
+        </div>
+      `))
+    })
+  } else {
     $('.content').append($(`
-      <div class="wrapper">
-        <img src="../img/7-7-450x450.jpg" alt="img">
-        <a href="#" class="title">${data["title"]}</a>
-        <p class="description">${data["description"]}</p>
-        <p class="price">$${data["price"]}</p>
-        <p class="count">Осталось: ${data["count"]}</p>
+    <div class="${customClass}">
+      <img src="../img/7-7-450x450.jpg" alt="img">
+      <div class="block">
+        <h3 class="title">${data[title]}</h3>
+        <p class="description">${data[description]}</p>
+        <p class="price">$${data[price]}</p>
+        <p class="count">Осталось: ${data[count]}</p>
       </div>
-    `))
-  })
+    </div>
+  `))
+  }
+
+}
+
+function addProduct(data) {
+  outputProductTemplate(data, true, 'wrapper', 'title', 'description', 'price', 'count')
 }
 
 function addCategories(data) {
@@ -95,10 +118,16 @@ function addPagination(data) {
 }
 
 function showPagePagination(array, numberPage) {
+
   let pageNumber = numberPage,
     start = (pageNumber - 1) * PRODUCT_PER_PAGE,
     end = start + PRODUCT_PER_PAGE,
+    notes = [];
+  if (array.length >= PRODUCT_PER_PAGE) {
     notes = array.slice(start, end);
+  } else {
+    notes = array;
+  }    
   clearDocument($('.content'))
   addProduct(notes)
 }
@@ -110,7 +139,7 @@ function filterProduct(data) {
     clearDocument($('.content'))
     addPagination(data);
     showPagePagination(data, 1);
-
+    productInfo(data) 
   })
 
 }
@@ -130,12 +159,38 @@ function ajaxCategories(data) {
           if (data["products"].length > 0) {
             showPagePagination(data["products"], 1);
             addPagination(data["products"]);
+            productInfo(data);
           } else {
             clearDocument($('.content'))
             $('.content').append($(`<span>There are no products in this category.</span>`))
             addPagination(data["products"])
             showPagePagination(data["products"], 1);
           }
+      },
+      error: function (xhr, status) {
+
+      }
+    })
+  })
+}
+//Product info
+function productInfo(data) {
+  $('.title').click(function (e) {
+    e.preventDefault()
+    let category_url = `http://symfony-erp.intexsoft.by/api/products/${$(this).attr('href')}`
+    let array = [];
+    $.ajax({
+      url: category_url,
+      type: 'GET',
+      headers: {
+        "Authorization": 'Bearer ' + (localStorage.getItem('token')),
+      },
+      success: function (data) {
+        clearDocument($('.content'))
+        clearDocument($('.pagination'))
+
+        outputProductTemplate(data, false, 'wrapper single-product-info' , 'title', 'description', 'price', 'count')
+
       },
       error: function (xhr, status) {
 
