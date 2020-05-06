@@ -158,6 +158,42 @@ a, div, p, span, h1, h2, h3, h4 {
   margin: 0;
 }
 
+.container .content .single-product-info {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  width: 100%;
+  padding: 0;
+}
+
+.container .content .single-product-info img {
+  width: 49%;
+}
+
+.container .content .single-product-info .block {
+  width: 49%;
+}
+
+.container .content .single-product-info:before {
+  content: none;
+}
+
+.container .content .single-product-info .title {
+  font-size: 24px;
+}
+
+.container .content .single-product-info .title:hover {
+  color: #333;
+  text-decoration: none;
+}
+
 .container .content img {
   width: 100%;
 }
