@@ -80,15 +80,17 @@ function addCategories(data) {
 }
 
 function addPagination(data) {
-  let array = data;
-  let arrayLength = Math.ceil(array.length / PRODUCT_PER_PAGE)
-  for (let index = 1; index <= arrayLength; index++) {
-    $('.pagination').append($(`
-      <span class="pagination-block" >${index}</span>
-    `))
+  let arrayLength = Math.ceil(data.length / PRODUCT_PER_PAGE)
+  clearDocument($('.pagination'))  
+  if (data.length > PRODUCT_PER_PAGE) {
+    for (let index = 1; index <= arrayLength; index++) {
+      $('.pagination').append($(`
+        <span class="pagination-block" >${index}</span>
+      `))
+    }
   }
   $('.pagination-block').click(function (e) {
-    showPagePagination(array, +$(this).html());
+    showPagePagination(data, +$(this).html());
   })
 }
 
@@ -97,7 +99,6 @@ function showPagePagination(array, numberPage) {
     start = (pageNumber - 1) * PRODUCT_PER_PAGE,
     end = start + PRODUCT_PER_PAGE,
     notes = array.slice(start, end);
-    console.log(array);
   clearDocument($('.content'))
   addProduct(notes)
 }
@@ -107,7 +108,9 @@ function filterProduct(data) {
     e.preventDefault()
     sortInNumericalOrder(data, `${$(this).attr('href')}`)
     clearDocument($('.content'))
+    addPagination(data);
     showPagePagination(data, 1);
+
   })
 
 }
@@ -124,13 +127,14 @@ function ajaxCategories(data) {
         "Authorization": 'Bearer ' + (localStorage.getItem('token')),
       },
       success: function (data) {
-        console.log(data["products"].length);
-          
           if (data["products"].length > 0) {
             showPagePagination(data["products"], 1);
+            addPagination(data["products"]);
           } else {
             clearDocument($('.content'))
             $('.content').append($(`<span>There are no products in this category.</span>`))
+            addPagination(data["products"])
+            showPagePagination(data["products"], 1);
           }
       },
       error: function (xhr, status) {
