@@ -158,6 +158,17 @@ a, div, p, span, h1, h2, h3, h4 {
   margin: 0;
 }
 
+.container .content .wrapper .block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
 .container .content .single-product-info {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;

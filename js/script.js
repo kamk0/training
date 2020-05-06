@@ -56,22 +56,24 @@ function clearDocument(element) {
 }
 
 //addProduct 
-function outputProductTemplate(data, buleam, cusotClass, title, description, price, count) {
-  if (buleam) {
+function outputProductTemplate(data, boolean, customClass, title, description, price, count) {
+  if (boolean) {
     $.each(data, function (key, data) {
       $('.content').append($(`
-        <div class="${cusotClass}">
+        <div class="${customClass}">
           <img src="../img/7-7-450x450.jpg" alt="img">
-          <a href="${data[title]}" class="title">${data[title]}</a>
-          <p class="description">${data[description]}</p>
-          <p class="price">$${data[price]}</p>
-          <p class="count">Осталось: ${data[count]}</p>
+          <div class="block">
+            <a href="${data[title]}" class="title">${data[title]}</a>
+            <p class="description">${data[description]}</p>
+            <p class="price">$${data[price]}</p>
+            <p class="count">Осталось: ${data[count]}</p>
+          </div>
         </div>
       `))
     })
   } else {
     $('.content').append($(`
-    <div class="${cusotClass}">
+    <div class="${customClass}">
       <img src="../img/7-7-450x450.jpg" alt="img">
       <div class="block">
         <h3 class="title">${data[title]}</h3>

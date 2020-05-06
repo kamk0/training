@@ -102,6 +102,11 @@ a, div, p, span, h1, h2, h3, h4 {
       p {
         margin: 0;
       }
+      .block {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
     }
     .single-product-info {
       flex-direction: row;
