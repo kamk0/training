@@ -74,7 +74,7 @@ a, div, p, span, h1, h2, h3, h4 {
   width: 80%;
 }
 
-.container .filter {
+.container .sorting, .container .filter {
   overflow: hidden;
   background: #f4f4f4;
   display: -webkit-box;
@@ -83,7 +83,7 @@ a, div, p, span, h1, h2, h3, h4 {
   margin-bottom: 25px;
 }
 
-.container .filter .btn {
+.container .sorting .btn, .container .filter .btn {
   text-transform: capitalize;
   text-decoration: none;
   color: #333;
@@ -96,9 +96,30 @@ a, div, p, span, h1, h2, h3, h4 {
   padding: 10px;
 }
 
-.container .filter .btn:hover {
+.container .sorting .btn:hover, .container .filter .btn:hover {
   color: #cc2121;
   text-decoration: underline;
+}
+
+.container .filter-wrap {
+  padding: 10px;
+}
+
+.container .filter-wrap input {
+  width: 60px;
+  padding: 5px 0 5px 5px;
+}
+
+.container .filter-wrap span {
+  cursor: pointer;
+  background: #fff;
+  height: 30px;
+  padding: 6px 10px;
+}
+
+.container .filter-wrap span:hover {
+  background: #000;
+  color: #fff;
 }
 
 .container .content {

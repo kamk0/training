@@ -11,11 +11,19 @@
 <body>
     <div class="container">
         <div class="r-block">
-            <div class="filter">
+            <div class="sorting">
                 <a href="price" class="btn">Цена</a>
                 <a href="title" class="btn">Имя</a>
                 <a href="#" class="btn">Новые</a>
                 <a href="count" class="btn">Популярные</a>
+            </div>
+            <div class="filter">
+                <div class="filter-wrap">
+                    <input type="number" id="from" placeholder="from">
+                    <input type="number" id="before" placeholder="before">
+                    <span id="filterBtn">Filter Price</span>
+                </div>
+
             </div>
             <div class="content"></div>
             <div class="pagination"></div>
