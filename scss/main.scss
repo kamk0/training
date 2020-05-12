@@ -119,6 +119,34 @@ a, div, p, span, h1, h2, h3, h4 {
       p {
         margin: 0;
       }
+      .block {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+    .single-product-info {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: end;
+      width: 100%;
+      padding: 0;
+      img {
+        width: 49%;
+      }
+      .block {
+        width: 49%;
+      }
+      &:before {
+        content: none;
+      }
+      .title {
+        font-size: 24px;
+        &:hover {
+          color: #333;
+          text-decoration: none;
+        }
+      }
     }
     img {
       width: 100%;
