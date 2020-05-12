@@ -1,4 +1,6 @@
 const PRODUCT_PER_PAGE = 8;
+let from =$('#from'),
+    before =$('#before');
 
 //Login
 $.ajax({
@@ -28,9 +30,11 @@ $.ajax({
     "Authorization": 'Bearer ' + (localStorage.getItem('token')),
   },
   success: function (data) {
-    addPagination(data["hydra:member"])
+    addPagination(data["hydra:member"]);
     showPagePagination(data["hydra:member"], 1);
     filterProduct(data["hydra:member"]);
+    productInfo(data["hydra:member"]);
+    filterFromToBefore(data["hydra:member"])
   },
   error: function (xhr, status) {
 
@@ -53,9 +57,42 @@ $.ajax({
 function clearDocument(element) {
   element.empty()
 }
-
-function addProduct(data) {
-  $.each(data, function (key, data) {
+//Get search {
+  $.ajax({
+    type: 'POST',
+    url: 'http://symfony-erp.intexsoft.by/api/product-search',
+    crossDomain: true,
+    data : {  search: "product",
+              count: 3
+           },
+    headers: {
+      "Authorization": 'Bearer ' + (localStorage.getItem('token')),
+    },
+    success: function (data) {
+      console.log(data);
+      
+    },
+    error: function (xhr, status) {
+  
+    }
+  });
+//addProduct 
+function outputProductTemplate(data, boolean, customClass, title, description, price, count) {
+  if (boolean) {
+    $.each(data, function (key, data) {
+      $('.content').append($(`
+        <div class="${customClass}">
+          <img src="../img/7-7-450x450.jpg" alt="img">
+          <div class="block">
+            <a href="${data[title]}" class="title">${data[title]}</a>
+            <p class="description">${data[description]}</p>
+            <p class="price">$${data[price]}</p>
+            <p class="count">Осталось: ${data[count]}</p>
+          </div>
+        </div>
+      `))
+    })
+  } else {
     $('.content').append($(`
       <div class="wrapper">
         <img src="../img/7-7-450x450.jpg" alt="img">
@@ -65,7 +102,7 @@ function addProduct(data) {
         <p class="count">Осталось: ${data["count"]}</p>
       </div>
     `))
-  })
+  }
 }
 
 function addCategories(data) {
@@ -145,6 +182,7 @@ function ajaxCategories(data) {
 }
 
 // Sorting in numerical order can improve the reverse function
+//Comes in [1, 3, 2] comes out [1, 2, 3]
 function sortInNumericalOrder(array, key) {
   array.sort(function (a, b) {
     if (a[key] < b[key]) {
@@ -155,4 +193,36 @@ function sortInNumericalOrder(array, key) {
       return 0;
     }
   })
+}
+let numbers = [4, 20, 5, 1, 3, 10, 7, 6, 8, 9, 2, 14, 232], 
+    newArr = [];
+    
+    
+function isPrime(num) {
+  if ( 5 <= num <= 1)
+      return true;
+}
+function filterFromToBefore(data) {
+  let filterArray = [];
+  $('#filterBtn').click(function () {
+    if (before.val()) {      
+      filterArray = data.filter(function (element) {
+        if ( from.val() <= element["price"] && element["price"] <= before.val()) {
+          return element ;
+        }
+      })
+    } else {
+      filterArray = data.filter(function (element) {
+        if ( from.val() <= element["price"]) {
+          return element ;
+        }
+      })
+    }
+    //sort array 0++
+    sortInNumericalOrder(filterArray, ["price"])
+
+    addPagination(filterArray);
+    showPagePagination(filterArray, 1);
+    filterProduct(filterArray);
+  });
 }
