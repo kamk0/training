@@ -67,7 +67,7 @@ function clearDocument(element) {
           crossDomain: true,
           data :  JSON.stringify({  
                     "search": matchvalue,
-                    "count": "200"
+                    "count": "20"
                  }),
           headers: {
             "Authorization": 'Bearer ' + (localStorage.getItem('token')),
@@ -80,6 +80,11 @@ function clearDocument(element) {
             filterFromToBefore(data)
           },
           error: function (xhr, status) {
+            clearDocument($('.content'));
+            clearDocument($('.pagination'));
+            $('.content').append($(`
+              <span>No product </span>
+            `))
           }
         });
     });
@@ -132,16 +137,21 @@ function addCategories(data) {
 }
 
 function addPagination(data) {
+  console.log(data);
+  
   let arrayLength = Math.ceil(data.length / PRODUCT_PER_PAGE)
   clearDocument($('.pagination'))  
-  if (data.length > PRODUCT_PER_PAGE) {
+  if (data.length > PRODUCT_PER_PAGE) {    
     for (let index = 1; index <= arrayLength; index++) {
       $('.pagination').append($(`
         <span class="pagination-block" >${index}</span>
       `))
     }
   }
+  $('.pagination-block:first').addClass('active');
   $('.pagination-block').click(function (e) {
+    $('.pagination-block').removeClass('active');
+    $(this).addClass('active');
     showPagePagination(data, +$(this).html());
   })
 }
@@ -157,6 +167,9 @@ function showPagePagination(array, numberPage) {
   } else {
     notes = array;
   }    
+  if ($('.pagination-block').html() == pageNumber) {
+    
+  }  
   clearDocument($('.content'))
   addProduct(notes)
 }
