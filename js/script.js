@@ -233,25 +233,24 @@ function sortInNumericalOrder(array, key) {
     }
   })
 }
-let numbers = [4, 20, 5, 1, 3, 10, 7, 6, 8, 9, 2, 14, 232], 
-    newArr = [];
-    
-    
-function isPrime(num) {
-  if ( 5 <= num <= 1)
-      return true;
-}
+
 function filterFromToBefore(data) {
   let filterArray = [];
   $('#filterBtn').click(function () {
-    if (before.val()) {      
+    console.log(data);
+    console.log(before.val().length);
+    
+    if (+from.val() < +before.val()) {            
       filterArray = data.filter(function (element) {
         if ( from.val() <= element["price"] && element["price"] <= before.val()) {
           return element ;
-        }
+        } 
       })
+      
     } else {
       filterArray = data.filter(function (element) {
+        console.log(2);
+        
         if ( from.val() <= element["price"]) {
           return element ;
         }
@@ -259,6 +258,7 @@ function filterFromToBefore(data) {
     }
     //sort array 0++
     sortInNumericalOrder(filterArray, ["price"])
+    console.log(filterArray);
 
     addPagination(filterArray);
     showPagePagination(filterArray, 1);
