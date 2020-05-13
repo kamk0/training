@@ -58,24 +58,32 @@ function clearDocument(element) {
   element.empty()
 }
 //Get search {
-  $.ajax({
-    type: 'POST',
-    url: 'http://symfony-erp.intexsoft.by/api/product-search',
-    crossDomain: true,
-    data : {  search: "product",
-              count: 3
-           },
-    headers: {
-      "Authorization": 'Bearer ' + (localStorage.getItem('token')),
-    },
-    success: function (data) {
-      console.log(data);
-      
-    },
-    error: function (xhr, status) {
-  
-    }
-  });
+  $(document).ready(function(){
+    $("#search").on('input', function postinput(){
+        var matchvalue = $(this).val();
+        $.ajax({
+          type: 'POST',
+          url: 'http://symfony-erp.intexsoft.by/api/product-search',
+          crossDomain: true,
+          data :  JSON.stringify({  
+                    "search": matchvalue,
+                    "count": "200"
+                 }),
+          headers: {
+            "Authorization": 'Bearer ' + (localStorage.getItem('token')),
+          },
+          success: function (data) {
+            addPagination(data);
+            showPagePagination(data, 1);
+            filterProduct(data);
+            productInfo(data);
+            filterFromToBefore(data)
+          },
+          error: function (xhr, status) {
+          }
+        });
+    });
+});
 //addProduct 
 function outputProductTemplate(data, boolean, customClass, title, description, price, count) {
   if (boolean) {
