@@ -381,7 +381,6 @@ function basketCount() {
     $('.basket__count').text(countBascket.length)
   } 
 }
-//count: "1"
 
 function basketPage() {
   $('.basket').click(function(){
@@ -430,16 +429,7 @@ function basketPage() {
 basketPage()
 
 
-// let buyProductObject = {};
 let buyProductArr = [];
-// buyProductObject = new function() {
-//     this.item_id;
-//     this.erp_item_id;
-//     this.product;
-//     this.name;
-//     this.count;
-//     this.price;
-// }
 function BuyProduct(item_id, erp_item_id, product, name, count, price) {
     this.item_id = item_id;
     this.erp_item_id = erp_item_id;
@@ -448,58 +438,3 @@ function BuyProduct(item_id, erp_item_id, product, name, count, price) {
     this.count = count;
     this.price = price;
   }
-// function buyProduct(item_id, erp_item_id, product, name, count, price) {
-  //   buyProductObject.item_id = item_id;
-  //   buyProductObject.erp_item_id = erp_item_id;
-  //   buyProductObject.product = product;
-  //   buyProductObject.name = name;
-  //   buyProductObject.count = count;
-  //   buyProductObject.price = price;
-  // }
-
-  
-
-
-
-
-
-
-
-
-
-
-// class objectWithGoods {
-//   constructor(item_id, erp_item_id, product, name, count, price) {
-//     this.item_id = item_id;
-//     this.erp_item_id = erp_item_id;
-//     this.product = product;
-//     this.name = name;
-//     this.count = count;
-//     this.price = price;
-//   }
-// }
-
-// class theWholeObjectToSend {
-//   constructor(order_id, status_code, order_items, first_name, last_name, email_address, country, city, street, house_number, purchase_date) {
-//     this.order_id = order_id;
-//     this.status_code = status_code;
-
-//     this.order_items = new objectWithGoods(order_items);
-
-//     this.first_name = first_name;
-//     this.last_name = last_name;
-//     this.email_address = email_address;
-//     this.country = country;
-//     this.city = city;
-//     this.street = street;
-//     this.house_number = house_number;
-//     this.purchase_date = purchase_date;
-//   }
-// }
-
-// let arrayProduct = [];
-    
-// var MyFirstObjectInstance1 = [1,1,1,"product1", 2, "1000.0"];
-// var MyFirstObjectInstance = new theWholeObjectToSend(1,'v', MyFirstObjectInstance1,"Igor", "Fedoseev", "kam94kam@gmail.com", "Poland", "Baku", "Kabiaka", 123, "2020-04-21T13:56:28.830183+03:00");
-// arrayProduct.push(MyFirstObjectInstance.order_items)
-// console.log(arrayProduct);
