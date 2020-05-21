@@ -5,6 +5,8 @@ body {
   margin: 0 auto;
   padding-top: 10px;
   font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
 }
 
 a,
@@ -20,7 +22,6 @@ h4 {
 
 .container {
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -96,6 +97,7 @@ h4 {
     justify-content: start;
     align-items: center;
     padding: 10px;
+
     input {
       width: 60px;
       padding: 5px 0 5px 5px;
@@ -230,7 +232,6 @@ h4 {
     color: $red;
   }
 
-  .count {}
 }
 
 .pagination {
@@ -242,7 +243,8 @@ h4 {
     color: white;
   }
 
-  &-block {
+  &-block,
+  &-block2 {
     width: 35px;
     line-height: 34px;
     text-align: center;
@@ -258,6 +260,61 @@ h4 {
       cursor: pointer;
       background: $red;
       color: white;
+    }
+  }
+}
+
+.basket {
+  position: relative;
+  font-size: 26px;
+  color: red;
+  width: 30px;
+  &__count {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    font-size: 12px;
+    font-weight: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: green;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    &.addProduct {
+      display: flex;
+    }
+  }
+  &Page {
+    margin: 10px;
+    img {
+      width: 150px;
+    }
+    .title {
+      &:hover {
+        color: #333;
+        text-decoration: none;
+      }
+    }
+    &__issue {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+      }
+      input {
+        margin: 10px 0;
+        padding: 5px 15px;
+      }
+      .addBasketProduct {
+        width: fit-content;
+        margin-top: 30px;
+      }
     }
   }
 }
