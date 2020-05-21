@@ -391,43 +391,68 @@ function basketPage() {
 
     $.each(basketProductArray, function (key, data) {
       $('.content').append($(`
-        <div class="basketPage">
+        <div data-index="${key}" class="basketPage notAdd">
           <img src="../img/7-7-450x450.jpg" alt="img">
           <div class="block">
             <h3 class="title">${data.title}</h3>
             <p class="description">${data.description}</p>
             <p class="price">$${data.price}</p>
             <p class="count" data-count="${data.count}">Осталось: ${data.count}</p>
-            <input type="number" id='countProduct' value="${data.countProduct}">
+            <input readonly type="number" class="countProduct" value="${data.countProduct}">
           </div>
+          <label class="basketPage__label">
+            add this product
+            <input class="basketPage__checkbox" type="checkbox"> 
+          </label>
         </div>
       `))
     })
+    checkboxChecked('.basketPage__checkbox')
+    //total
     for(let i=0;i<basketProductArray.length;i++){
       total = total + parseInt(basketProductArray[i].countProduct * basketProductArray[i].price);
     }
-    
     $('.content').append($(`
       <div class="basketPage__issue">
         <span class="price">Total: $${total}</span>
-        <form>
-        <h3>Form by</h3>
-        <input type="text" name="first_name" placeholder="first_name">
-        <input type="text" name="last_name" placeholder="last_name">
-        <input type="text" name="email_address" placeholder="email_address">
-        <input type="text" name="country" placeholder="country">
-        <input type="text" name="city" placeholder="city">
-        <input type="text" name="street" placeholder="street">
-        <input type="text" name="house_number" placeholder="house_number">
-
         <button type="button" class="addBasketProduct">To issue</button>
-        </form>
       </div>`
     ))
+    //form
+    // $('.content').append($(`
+    //   <div class="basketPage__issue">
+    //     <span class="price">Total: $${total}</span>
+    //     <form>
+    //     <h3>Form by</h3>
+    //     <input type="text" name="first_name" placeholder="first_name">
+    //     <input type="text" name="last_name" placeholder="last_name">
+    //     <input type="text" name="email_address" placeholder="email_address">
+    //     <input type="text" name="country" placeholder="country">
+    //     <input type="text" name="city" placeholder="city">
+    //     <input type="text" name="street" placeholder="street">
+    //     <input type="text" name="house_number" placeholder="house_number">
+
+    //     <button type="button" class="addBasketProduct">To issue</button>
+    //     </form>
+    //   </div>`
+    // ))
   })
 }
 basketPage()
+function checkboxChecked(element) {
+  $(element).click(function () {
+    if ($(this).prop('checked')) {
+      $(this).closest('.basketPage__label').addClass('checked')
+      $(this).closest('.basketPage').removeClass('notAdd')
+      $(this).closest('.basketPage').find('.countProduct').removeAttr('readonly')
+    } else {
+      $(this).closest('.basketPage__label').removeClass('checked')
+      $(this).closest('.basketPage').addClass('notAdd')
+      $(this).closest('.basketPage').find('.countProduct').attr('readonly', 'readonly')
 
+    }
+  })
+}
 
 let buyProductArr = [];
 function BuyProduct(item_id, erp_item_id, product, name, count, price) {
