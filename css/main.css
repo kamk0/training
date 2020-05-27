@@ -423,7 +423,7 @@ h4 {
   text-decoration: none;
 }
 
-.basketPage__issue {
+.basketPage__issue, .basketPage__total {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -434,7 +434,7 @@ h4 {
   width: 100%;
 }
 
-.basketPage__issue form {
+.basketPage__issue form, .basketPage__total form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -445,12 +445,12 @@ h4 {
   width: 50%;
 }
 
-.basketPage__issue input {
+.basketPage__issue input, .basketPage__total input {
   margin: 10px 0;
   padding: 5px 15px;
 }
 
-.basketPage__issue .addBasketProduct {
+.basketPage__issue .addBasketProduct, .basketPage__total .addBasketProduct {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;

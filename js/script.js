@@ -1,4 +1,6 @@
-const PRODUCT_PER_PAGE = 20;
+const PRODUCT_PER_PAGE = 20, 
+      basketProductArray = JSON.parse(localStorage.getItem('bascketProduct'));
+      issueProductIndexArray = JSON.parse(localStorage.getItem('issueProductIndex'));
 let from =$('#from'),
     before =$('#before');
 
@@ -354,19 +356,17 @@ function clickBtnAddProduct(data) {
   
   $('.addBasketProduct').click(function(){
     if ($('#countProduct').val() > 0) {
-      let  ArrayProductBacket = [];
           //  newObj =  new BuyProduct(1, 1, 1, data.title, $('#countProduct').val(), data.price);
           data.countProduct = $('#countProduct').val();
           newObj = data;
       if (localStorage.getItem('bascketProduct')) {
-        ArrayProductBacket = (JSON.parse(localStorage.getItem('bascketProduct')));
-        ArrayProductBacket.push(newObj);
-        localStorage.setItem('bascketProduct', JSON.stringify(ArrayProductBacket));
-        ArrayProductBacket.length = 0
+        basketProductArray.push(newObj);
+        localStorage.setItem('bascketProduct', JSON.stringify(basketProductArray));
+        basketProductArray.length = 0
       } else {        
-        ArrayProductBacket.push(newObj)
-        localStorage.setItem('bascketProduct', JSON.stringify(ArrayProductBacket));
-        ArrayProductBacket.length = 0
+        basketProductArray.push(newObj)
+        localStorage.setItem('bascketProduct', JSON.stringify(basketProductArray));
+        basketProductArray.length = 0
       }
       basketCount()
     } else {
@@ -376,22 +376,18 @@ function clickBtnAddProduct(data) {
 //add basket count product
 function basketCount() {
   if (localStorage.getItem('bascketProduct')) {
-    let countBascket = JSON.parse(localStorage.getItem('bascketProduct'));
     $('.basket__count').addClass('addProduct');
-    $('.basket__count').text(countBascket.length)
+    $('.basket__count').text(basketProductArray.length)
   } 
 }
 
 function basketPage() {
   $('.basket').click(function(){
 
-    let total = 0;
-    basketProductArray = JSON.parse(localStorage.getItem('bascketProduct'));
     clearDocument($('.content'))
-
     $.each(basketProductArray, function (key, data) {
       $('.content').append($(`
-        <div data-index="${key}" class="basketPage notAdd">
+        <div class="basketPage notAdd">
           <img src="../img/7-7-450x450.jpg" alt="img">
           <div class="block">
             <h3 class="title">${data.title}</h3>
@@ -402,55 +398,86 @@ function basketPage() {
           </div>
           <label class="basketPage__label">
             add this product
-            <input class="basketPage__checkbox" type="checkbox"> 
+            <input data-index="${key}" class="basketPage__checkbox" type="checkbox"> 
           </label>
         </div>
       `))
     })
     checkboxChecked('.basketPage__checkbox')
     //total
-    for(let i=0;i<basketProductArray.length;i++){
-      total = total + parseInt(basketProductArray[i].countProduct * basketProductArray[i].price);
-    }
-    $('.content').append($(`
-      <div class="basketPage__issue">
-        <span class="price">Total: $${total}</span>
-        <button type="button" class="addBasketProduct">To issue</button>
-      </div>`
-    ))
-    //form
-    // $('.content').append($(`
-    //   <div class="basketPage__issue">
-    //     <span class="price">Total: $${total}</span>
-    //     <form>
-    //     <h3>Form by</h3>
-    //     <input type="text" name="first_name" placeholder="first_name">
-    //     <input type="text" name="last_name" placeholder="last_name">
-    //     <input type="text" name="email_address" placeholder="email_address">
-    //     <input type="text" name="country" placeholder="country">
-    //     <input type="text" name="city" placeholder="city">
-    //     <input type="text" name="street" placeholder="street">
-    //     <input type="text" name="house_number" placeholder="house_number">
-
-    //     <button type="button" class="addBasketProduct">To issue</button>
-    //     </form>
-    //   </div>`
-    // ))
+    basketTotal(basketProductArray)
+    btnToIssue($('.addBasketProduct'))
   })
 }
 basketPage()
+
+
+function basketTotal(array) {
+  let total = 0;
+  for(let i=0;i<array.length;i++){
+    total = total + parseInt(array[i].countProduct * array[i].price);
+  }
+  if ($('div').hasClass('basketPage__total')) {
+    clearDocument($('.basketPage__total'));
+    $('.basketPage__total').append($(`
+      <span class="price">For all: $${total}</span>
+      <button type="button" class="addBasketProduct" disabled>To issue</button>`
+    ))
+  } else {
+    $('.content').append($(`
+      <div class="basketPage__total">
+      <span class="price">For all: $${total}</span>
+      <button type="button" class="addBasketProduct" disabled>To issue</button>
+      </div>`
+    ))
+  }
+}
+
+function btnToIssue(element) {
+  $(element).click(function () {
+    $('.content').append($(`
+      <div class="basketPage__issue">
+        <form>
+        <h3>Form by</h3>
+        <input type="text" name="first_name" placeholder="first_name">
+        <input type="text" name="last_name" placeholder="last_name">
+        <input type="text" name="email_address" placeholder="email_address">
+        <input type="text" name="country" placeholder="country">
+        <input type="text" name="city" placeholder="city">
+        <input type="text" name="street" placeholder="street">
+        <input type="text" name="house_number" placeholder="house_number">
+        <button type="button" class="byProductBtn">To issue</button>
+        </form>
+      </div>`
+    ))
+    let arr = []
+    $('.basketPage__checkbox').each(function () {
+      if ($(this).prop('checked')) {
+        arr.push(basketProductArray[$(this).data('index')])
+      }
+    });
+    basketTotal(arr)
+
+  })
+}
+
 function checkboxChecked(element) {
   $(element).click(function () {
     if ($(this).prop('checked')) {
       $(this).closest('.basketPage__label').addClass('checked')
       $(this).closest('.basketPage').removeClass('notAdd')
-      $(this).closest('.basketPage').find('.countProduct').removeAttr('readonly')
+      $(this).closest('.basketPage').find('.countProduct').removeAttr('readonly')      
     } else {
       $(this).closest('.basketPage__label').removeClass('checked')
       $(this).closest('.basketPage').addClass('notAdd')
       $(this).closest('.basketPage').find('.countProduct').attr('readonly', 'readonly')
-
     }
+    let sList = 0;
+    $('.basketPage__checkbox').each(function () {
+        let sThisVal = (this.checked ? 1 : 0);
+        sList += (sList == 0 ? sThisVal : sThisVal);
+    });
+    sList ? $('.addBasketProduct').prop('disabled', false) : $('.addBasketProduct').prop('disabled', true);
   })
 }
 

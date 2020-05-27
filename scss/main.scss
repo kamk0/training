@@ -339,7 +339,7 @@ h4 {
         text-decoration: none;
       }
     }
-    &__issue {
+    &__issue, &__total {
       display: flex;
       flex-direction: column;
       width: 100%;
